@@ -79,4 +79,6 @@ Ideas for future updates: save and load meals, add a date-based weekly planner, 
 
 ## Screenshot
 
-A screenshot from the running macOS application can be added after testing the updated version.
+![Meal Planner running on macOS with eight alphabetically sorted meals and a Ravioli recommendation](meal_planner_demo.png)
+
+*The working macOS app with eight meals added and the random recommendation feature in use.*
