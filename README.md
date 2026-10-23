@@ -1,83 +1,82 @@
 # Python Tkinter Meal Planner
 
-A desktop meal planner built in **Python** with **Tkinter**, using a **binary search tree (BST)** and **recursive in-order traversal** to keep meal names in alphabetical order.
+A desktop meal planner I built in **Python with Tkinter**. It uses a **binary search tree (BST)**, recursive insertion and in-order traversal to keep meal names in alphabetical order.
 
 ## What it does
 
-- Add meals through a graphical interface.
-- Insert meal names into a binary search tree using alphabetical comparisons.
-- Display the planned meals in sorted order using recursive in-order traversal.
-- Display an error message when the meal field is empty.
-- Suggest a randomly selected meal from the entries already added.
-- Warn when a recommendation is requested before adding any meals.
+- Add meals **one at a time** through a graphical interface.
+- Display added meals alphabetically in a separate list.
+- Suggest a randomly selected meal from the current list.
+- Reject empty entries and duplicate meal names (ignoring capitalisation).
+- Remove a selected meal or clear the full list.
+- Show clear success/error messages and a count of planned meals.
+- Use explicit light text/background colours to improve readability on macOS.
 
-## Technologies and concepts
+**Note:** Meals are currently stored in memory and are lost when the program closes.
 
-**Python 3 · Tkinter · object-oriented programming · binary search trees · recursion · event-driven programming · input validation**
+## How to run it on macOS
 
-The code separates data structure logic (`TreeNode` and `BinaryTree`) from the graphical application (`MealPlanner`).
-
-## Running the program
-
-Python 3 and Tkinter are required. Tkinter is commonly included with desktop Python installations.
-
-1. Download the `meal_planner.py` file or clone this repository.
-2. In a terminal, run:
+Open **Terminal**, then paste these commands to download the latest version from GitHub and open the app:
 
 ```bash
-python meal_planner.py
+cd ~/Downloads
+curl -fL https://raw.githubusercontent.com/k1ngXravioli/Python-Meal-Planner/main/meal_planner.py -o meal_planner.py
+python3 meal_planner.py
 ```
 
-On some systems, the command is `python3 meal_planner.py`.
-
-3. Type a meal name and select **Plan Meal** to add it, or select **Get Recommendation** for a random suggestion.
-
-## How the binary search tree works
-
-A meal name is stored in a tree node. For each new meal, recursive insertion compares its name against the current node. Names that compare as smaller go left; others go right. An in-order traversal visits the left subtree, the current node and then the right subtree, producing an alphabetically ordered list according to Python's string comparison rules.
-
-For example, inserting `Pasta`, `Curry` and `Salad` produces the ordered list:
+Use **one meal at a time**: type `Burger`, press **Add meal** (or Return), then repeat with `Pasta` and `Pizza`. The separate *Your planned meals* list should show:
 
 ```text
-Curry
+Burger
 Pasta
-Salad
+Pizza
 ```
+
+Click **Suggest a meal** for a recommendation, or select a meal in the list and click **Remove selected**.
+
+**Requirements:** Python 3.10 or newer and Tkinter. If macOS says `No module named '_tkinter'`, use a Python distribution with Tkinter support.
+
+## Technical implementation
+
+**Stack:** Python · Tkinter / ttk · Object-oriented programming · Binary Search Tree · Recursion · Input Validation.
+
+The data model is intentionally separate from the UI:
+
+- `TreeNode` stores one meal name and pointers to left and right nodes.
+- `BinaryTree.insert()` recursively inserts items, comparing meal names case-insensitively.
+- `BinaryTree.get_planned_meals()` uses an in-order traversal to retrieve sorted meals.
+- `BinaryTree.remove()` rebuilds a small tree after deleting an entry.
+- `MealPlanner` handles text entry, the listbox, buttons and user feedback.
+
+For example, inserting `Pizza`, `Burger`, then `Pasta` produces `Burger`, `Pasta`, `Pizza`.
+
+## Tests
+
+Three tests verify BST insertion/sorting, case-insensitive duplicate handling, and removing/clearing entries. Run:
+
+```bash
+python3 -m unittest -v test_meal_planner.py
+```
+
+The model tests and a virtual-display GUI interaction test passed during the latest update. The appearance on macOS still needs a real Mac check.
 
 ## What I learned
 
-Building the project helped me understand how a larger operation can be divided into smaller recursive calls. It also gave me practical experience combining a data structure with a GUI, validating user input, and updating an interface when application state changes.
+This project helped me understand how recursion divides a larger operation into smaller calls, how data structures can support GUI features, and why error handling and interface readability matter when testing software.
 
-## Current limitations
+## Changes made after testing on a Mac
 
-- Meals are kept in memory and are lost when the application closes.
-- The BST is not self-balancing; sorted input can produce a less efficient tree.
-- Duplicate meal names are allowed.
-- Sorting is case-sensitive, following Python's default string comparison rules.
-- No automated GUI tests or persistence are included in this version.
+The first version had difficult-to-read text in macOS dark mode, and it was unclear where to type new meals versus where saved meals should appear. The updated version uses explicit text colours, a distinct meal-entry field, a separate list, clearer instructions and improved controls.
 
-## Suggested manual checks
+## Limitations and future work
 
-| Check | Expected behaviour |
-| --- | --- |
-| Add Pasta, Curry and Salad | Display Curry, Pasta, Salad |
-| Submit an empty meal name | Show an input error dialog |
-| Request a recommendation before adding meals | Show a warning |
-| Request a recommendation after adding meals | Show one of the stored meals |
+- No persistent storage yet.
+- The BST is not self-balancing for every insertion order.
+- This is a small educational desktop project rather than a deployed web service.
+- Automated GUI testing on an actual Mac has not yet been performed.
 
-These are suggested checks, **not claims that an automated test suite has run**.
+Ideas for future updates: save and load meals, add a date-based weekly planner, and improve automated GUI tests.
 
-## Future improvements
+## Screenshot
 
-- Add save/load support for meals between sessions.
-- Support removing meals and avoiding duplicates.
-- Add automated tests for insertion and traversal.
-- Consider a balanced tree or simpler list for larger collections.
-
-## Screenshots
-
-A screenshot of the running Tkinter application can be added later in `screenshots/`.
-
----
-
-This is an original learning project. The code in `meal_planner.py` reflects the implementation supplied for this portfolio, with formatting restored from the copied text.
+A screenshot from the running macOS application can be added after testing the updated version.
